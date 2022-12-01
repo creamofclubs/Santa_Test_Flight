@@ -3,6 +3,7 @@ from getweather import get_weather_SL
 import streamlit as st
 import config
 import pandas as pd
+st.set_page_config(layout="wide")
 
 def get_hourly(weather):
     data = []
@@ -17,7 +18,7 @@ def get_hourly(weather):
         data.append(hour_data)
     return pd.DataFrame(data)
 
-st.set_page_config(layout="wide")
+
 
 #image = Image.open('santas Test flight.jpg')
 
