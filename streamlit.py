@@ -3,7 +3,7 @@ from getweather import get_weather_SL
 import streamlit as st
 import config
 import pandas as pd
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", initial_sidebar_state='expanded')
 
 def get_hourly(weather):
     data = []
