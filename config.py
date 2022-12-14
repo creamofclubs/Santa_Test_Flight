@@ -21,7 +21,7 @@ st.secrets["API_KEY"] for example, use keys below for testing only!!!"""
 LOCAL_API = st.secrets["WEATHER_API_KEY"] #!!!! Hide after Dev
 ## API from https://api.n2yo.com  # NASA
 API_KEY = st.secrets["NASA_API_KEY"] #!!!! Hide after Dev
-SATID = 25544 # this is the space station ID
+SATID = 25634 # ARGOS # 25544 # this is the space station ID
 URL = (f'https://api.n2yo.com/rest/v1/satellite/visualpasses/{SATID}/41.702/-76.014/0/2/60/&apiKey={API_KEY}')
 APPNAME = name # 'santatraker1' #!!!! Hide after Dev
 
