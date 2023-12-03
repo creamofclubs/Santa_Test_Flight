@@ -1,9 +1,12 @@
+
+import streamlit as st
+st.set_page_config(layout="wide")
 from generate import *
 from getweather import get_weather_SL
-import streamlit as st
 import config
 import pandas as pd
-st.set_page_config(layout="wide", initial_sidebar_state='expanded')
+#st.set_page_config(layout="wide", initial_sidebar_state='expanded')
+
 
 def get_hourly(weather):
     data = []
@@ -49,7 +52,7 @@ with st.expander("Instuctions"):
 
 #Sidebar
 try:
-    location = st.sidebar.text_input('enter location')
+    location = st.text_input('Enter Location')
     
     # Generate location
     df= get_sat_info(location)
@@ -59,7 +62,7 @@ try:
     lon = df[2]
     weather = get_weather_SL(lat,lon)
     hourlyweather = get_hourly(weather)
-    maxresults = st.sidebar.slider('How many rows',1,maxrows,10)
+    maxresults = st.slider('How many rows',1,maxrows,10)
 
 # # Main page
     st.title(f'Santa Tracker for {location}')
@@ -94,7 +97,8 @@ try:
     
     st.subheader(f'Santas next test flights.')
     st.caption(f'with the next pass at')
-    st.dataframe(joined.head(maxresults).style.set_precision(2),use_container_width=True)
+    #st.dataframe(joined.head(maxresults).style.set_precision(2),use_container_width=True)
+    st.dataframe(joined.head(maxresults))
   
 except Exception as e: 
 

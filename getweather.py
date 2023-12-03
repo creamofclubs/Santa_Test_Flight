@@ -8,7 +8,7 @@ import config
 geolocator = Nominatim(user_agent=config.APPNAME)
 api = config.LOCAL_API
 
-@st.cache
+@st.cache_data 
 def get_weather(place = 'castleford'):
     location = geolocator.geocode(place)
     lat = location.latitude
@@ -21,7 +21,7 @@ def get_weather(place = 'castleford'):
     
     
     return weather, daily, Currentweather
-@st.cache
+@st.cache_data 
 def get_weather_SL(lat,lon):
     #api = config.API
     weatherurl = (f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=minutely&appid={api}&units=metric')

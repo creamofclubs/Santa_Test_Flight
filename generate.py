@@ -10,7 +10,7 @@ fld = './data/'
 geolocator = Nominatim(user_agent=APPNAME)
 
 # returns the elevation from lat, long, based on open elevation data
-@st.cache
+@st.cache_data 
 def get_elevation(lat, long):
     query = ('https://api.open-elevation.com/api/v1/lookup'
              f'?locations={lat},{long}')
@@ -20,7 +20,7 @@ def get_elevation(lat, long):
     return elevation
 
 # returns latitude, londitude, Alttude, and address from geolocator
-@st.cache
+@st.cache_data 
 def get_location(place):
     """Gets the location information from the Geo Api then gets the elevation information.
     Paremeters: require as place or location"""
@@ -32,7 +32,7 @@ def get_location(place):
     return lat,lon,alt,address
 
 # processes the satilate passing information and while convertiing the unix times to datetime
-@st.cache
+@st.cache_data 
 def process_file(d):
     passes = d['passes']
     df = pd.DataFrame(passes)
@@ -55,7 +55,8 @@ def process_file(d):
     return df
 
 # generate the satilite information
-@st.cache(suppress_st_warning=True)
+#@st.cache(suppress_st_warning=True)
+@st.cache_data
 def get_sat_info(place = "Castleford"):
     st.snow()
     getloc = get_location(place)
