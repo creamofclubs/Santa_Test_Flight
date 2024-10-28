@@ -94,9 +94,27 @@ try:
     
     joined = pd.merge(df, hourlyweather, how='left', left_on=['StartDates','hour'], right_on =['date','hours'])
     joined.drop(['date','hour_x','hour_y','hours'],axis=1, inplace=True)
+    # Renaming columns for a festive display
+    joined.rename(columns={
+        'StartDates': 'Date 🎄',
+        'StartTime': 'Santa\'s Arrival Time 🎄🎅',
+        'StartDeg': 'Starting Direction 🌌',
+        'startEl': 'Starting Elevation 🎁',
+        'ApexTime': 'Sleigh at its Highest 🎅',
+        'MaxDeg': 'Max Brightness ⭐️',
+        'maxEl': 'Max Elevation 🎆',
+        'EndTime': 'Departure Time 🎉',
+        'EndDeg': 'Departure Direction 🎄',
+        'endEl': 'End Elevation 🎁',
+        'mag': 'Santa Brightness 🎅',
+        'duration': 'Flight Duration 🎄',
+        'temp': 'Temperature 🎄',
+        'cloudcover': 'Cloud Cover 🌨️',
+        'genderdescription': 'Sky Conditions ❄️'
+    }, inplace=True)
     
-    st.subheader(f'Santas next test flights.')
-    st.caption(f'with the next pass at')
+    st.subheader(f'🎅Santas next test flights.🎅')
+    st.caption('Watch the skies for the next magical pass!')
     #st.dataframe(joined.head(maxresults).style.set_precision(2),use_container_width=True)
     st.dataframe(joined.head(maxresults))
   
