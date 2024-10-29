@@ -5,6 +5,8 @@ from generate import *
 from getweather import get_weather_SL
 import config
 import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
 #st.set_page_config(layout="wide", initial_sidebar_state='expanded')
 
 
@@ -97,16 +99,16 @@ try:
     # Renaming columns for a festive display
     joined.rename(columns={
         'StartDates': 'Date 🎄',
-        'StartTime': 'Santa\'s Arrival Time 🎄🎅',
+        'StartTime': 'Santa\'s Arrival Time 🎅',
         'StartDeg': 'Starting Direction 🌌',
         'startEl': 'Starting Elevation 🎁',
-        'ApexTime': 'Sleigh at its Highest 🎅',
-        'MaxDeg': 'Max Brightness ⭐️',
+        'ApexTime': 'Sleigh Highest 🎅',
+        'MaxDeg': 'Max Direction',
         'maxEl': 'Max Elevation 🎆',
         'EndTime': 'Departure Time 🎉',
         'EndDeg': 'Departure Direction 🎄',
         'endEl': 'End Elevation 🎁',
-        'mag': 'Santa Brightness 🎅',
+        'mag': 'Santa Brightness ⭐️',
         'duration': 'Flight Duration 🎄',
         'temp': 'Temperature 🎄',
         'cloudcover': 'Cloud Cover 🌨️',
@@ -117,6 +119,33 @@ try:
     st.caption('Watch the skies for the next magical pass!')
     #st.dataframe(joined.head(maxresults).style.set_precision(2),use_container_width=True)
     st.dataframe(joined.head(maxresults))
+    arcdf = joined[['Starting Direction 🌌','Starting Elevation 🎁','Max Direction','Max Elevation 🎆','Departure Direction 🎄','End Elevation 🎁']].head(maxresults)
+    plt.figure(figsize=(8, 8))
+    ax = plt.subplot(111, polar=True)
+    for i, row in arcdf.head().iterrows():
+        # Convert directions to radians
+        theta_start = np.deg2rad(row["Starting Direction 🌌"])
+        theta_max = np.deg2rad(row["Max Direction"])
+        theta_end = np.deg2rad(row["Departure Direction 🎄"])
+        
+        # Radii for elevations
+        radii_start = row["Starting Elevation 🎁"]
+        radii_max = row["Max Elevation 🎆"]
+        radii_end = row["End Elevation 🎁"]
+        
+        # Generate points for the arc including the peak
+        theta = np.linspace(theta_start,theta_max, theta_end, 100)
+        radii = np.interp(theta, [theta_start, theta_max, theta_end], [radii_start, radii_max, radii_end])
+        #radii = np.interp(theta, [theta_start, theta_end], [radii_start,  radii_end])
+        
+        # Plot the arc
+        ax.plot(theta, radii, label=f'Flight {i+1}', linewidth=2)
+
+    ax.set_title("Santa's Path Across the Sky", va='bottom')
+    ax.set_rmax(1)  # Set maximum radius for clarity in elevation representation
+    plt.legend(loc="upper right", bbox_to_anchor=(1.2, 1.1))
+    st.pyplot(plt.gcf())
+
   
 except Exception as e: 
 

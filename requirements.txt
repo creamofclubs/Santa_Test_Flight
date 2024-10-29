@@ -2,3 +2,5 @@ requests
 pandas
 geopy
 streamlit
+matplotlib
+numpy
