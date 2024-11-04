@@ -119,37 +119,48 @@ try:
     st.caption('Watch the skies for the next magical pass!')
     #st.dataframe(joined.head(maxresults).style.set_precision(2),use_container_width=True)
     st.dataframe(joined.head(maxresults))
+    # Prepare the data for plotting
     arcdf = joined[['Starting Direction 🌌','Starting Elevation 🎁','Max Direction','Max Elevation 🎆','Departure Direction 🎄','End Elevation 🎁']].head(maxresults)
+
+    # Plot the polar chart
     plt.figure(figsize=(8, 8))
     ax = plt.subplot(111, polar=True)
-    for i, row in arcdf.head().iterrows():
+
+    # Set compass orientation: North (0°) at the top, clockwise direction
+    ax.set_theta_offset(np.pi / 2)  # Rotate so 0° is at the top
+    ax.set_theta_direction(-1)      # Set clockwise direction
+
+    for i, row in arcdf.iterrows():
         # Convert directions to radians
         theta_start = np.deg2rad(row["Starting Direction 🌌"])
         theta_max = np.deg2rad(row["Max Direction"])
         theta_end = np.deg2rad(row["Departure Direction 🎄"])
-        
+
         # Radii for elevations
         radii_start = row["Starting Elevation 🎁"]
         radii_max = row["Max Elevation 🎆"]
         radii_end = row["End Elevation 🎁"]
-        
-        # Generate points for the arc including the peak
-        theta = np.linspace(theta_start,theta_max, theta_end, 100)
+
+        # Define the theta values for the arc
+        theta = np.linspace(theta_start, theta_end, 100)
+
+        # Interpolate the radii for the arc (start, max, and end points)
         radii = np.interp(theta, [theta_start, theta_max, theta_end], [radii_start, radii_max, radii_end])
-        #radii = np.interp(theta, [theta_start, theta_end], [radii_start,  radii_end])
-        
-        # Plot the arc
-        ax.plot(theta, radii, label=f'Flight {i+1}', linewidth=2)
 
+        # Plot each flight path as an arc
+        ax.plot(theta, radii, label=f'Flight {i + 1}', linewidth=2)
+
+    # Setting the plot title and axis limits for better readability
     ax.set_title("Santa's Path Across the Sky", va='bottom')
-    ax.set_rmax(1)  # Set maximum radius for clarity in elevation representation
+    ax.set_ylim(0, 90)  # Limiting to 0-90 degrees as it represents elevation
     plt.legend(loc="upper right", bbox_to_anchor=(1.2, 1.1))
-    st.pyplot(plt.gcf())
 
+    # Display the plot in Streamlit
+    st.pyplot(plt.gcf())
+    plt.close() 
   
 except Exception as e: 
-
-    st.title('Please enter a location')
+    print(e)
     
 
 
